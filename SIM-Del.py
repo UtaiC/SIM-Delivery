@@ -23,7 +23,7 @@ Delm=Delm.fillna(0)
 
 Sales=Delm[['Date','Qty','TT-B']]
 #Sales=Sales.astype(int)
-Sales
+st.write(Sales)
 
 Saleschart=Sales.groupby('PartNo').sum()
 Saleschart=Saleschart[Saleschart>0]
