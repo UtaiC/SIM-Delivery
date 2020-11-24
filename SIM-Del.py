@@ -39,10 +39,12 @@ st.subheader('Sales (Pcs) by Part Update')
 Saleschart['Qty']
 st.bar_chart(Saleschart['Qty'])
 
-
+SaleQty=Sales['Qty'].sum()
 Salesupdate=Sales['TT-B'].sum()
 st.subheader('Total Sales Update (B)')
 st.success(Salesupdate)
+st.subheader('Total Sales Update (Pcs)')
+st.success(SaleQty)
 #st.dataframe(Sales.apply(lambda y: "%.2f" % y))
 
 selected_Part = st.sidebar.multiselect('Select PartNo', ['1632','1732','2532','2633','9231','9330','1231','1530','1630','2731','2831','4333','4433','5130','5230','5330','2001','2031','2902','3102','5402',
