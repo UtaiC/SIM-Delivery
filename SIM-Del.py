@@ -10,7 +10,7 @@ st.image(Logo,width=500)
 #######Heading Text##########
 st.title('**Sales Report**')
 ######Delivery Data #1 Data#############
-sales_or=pd.read_excel('Del-Data-or.xlsx')
+sales_or=pd.read_excel('Del-Data-Or.xlsx')
 sales_or.set_index('Part_No',inplace=True)
 sales1=sales_or.groupby('Part_No').sum()
 ######Database Data#####################
