@@ -9,67 +9,87 @@ Logo=Image.open('SIM-Logo.jpeg')
 st.image(Logo,width=500)
 #######Heading Text##########
 st.title('**Sales Report**')
-######Delivery Data #1 Data#############
-sales_or=pd.read_excel('Del-Data-Or.xlsx')
-sales_or.set_index('Part_No',inplace=True)
-sales1=sales_or.groupby('Part_No').sum()
-######Database Data#####################
+##### DataBase File ###################
 db=pd.read_excel('Database.xlsx')
 db.set_index('Part_No',inplace=True)
-######Delivery-EDI Data Split PartNo and Made New DF #####################
+########## EDI File Data Split PartNo and Made New DF ################
+EDIdata=pd.read_excel('EDI.xlsx')
+EDIdata2= pd.DataFrame(EDIdata['Part'].str.split('/',1).to_list(), columns=["Part_No","Part_Name"])
+EDIm=pd.concat([EDIdata,EDIdata2],axis=1,sort=False)
+EDIm2=EDIm.groupby('Date').sum()
+############ Delivery File Data Split PartNo and Made New DF #################
 Del=pd.read_excel('Deli.xlsx')
 Del1= pd.DataFrame(Del['Part'].str.split('/',1).to_list(), columns=["Part_No","Part_Name"])
-Deliver=pd.concat([Del,Del1],axis=1,sort=False)
-Deliver2=Deliver.groupby('Part_No').sum()
-###### Maerge 3 DFs #####################
-sales=pd.merge(db['Price'],Deliver2,on='Part_No',how='left')
-#sales2=pd.merge(sales1['TT-B'],sales,on='Part_No',how='left')
-sales['TT-B-2']=(sales['Del-Pcs']*sales['Price'])
-G_Total_Sales=(sales['TT-B-2'].sum())
+Delm=pd.concat([Del,Del1],axis=1,sort=False)
+Delm2=Delm.groupby('Part_No').sum()
+############## Merg EDI-Del-db #######################
+EDIDel=EDIm.merge(Delm[['Date','Part_No','Del-Pcs']],how = 'left', left_on = ['Date','Part_No'], right_on = ['Date','Part_No'])
+EDIDel_ok=EDIDel.merge(db[['PartNo','Price']],on='Part_No',how='left')
+EDIDel_ok=EDIDel_ok.fillna(0)
+EDIDel_ok.set_index('Part_No',inplace=True)
 
-###### Make Calulate on Deli Data #####################
-sales['Del-Sales']=sales['Del-Pcs']*sales['Price']
-sales['EDI-Sales']=sales['EDI-Pcs']*sales['Price']
-sales['Sales-Pct']=(sales['Del-Sales']/sales['EDI-Sales'])*100
-Pct=sales['Sales-Pct'].mean()
-###### Show Data Details #####################
-Deli_Sales=sales[['EDI-Sales','Del-Sales']]
-Deli_Sales2=sales[['EDI-Sales','Del-Sales','Sales-Pct']]
-Deli_Sales1=Deli_Sales.fillna(0)
-Deli_Sales1=Deli_Sales[Deli_Sales>0]
-Deli_Sales2=Deli_Sales2.dropna()
-
-###### Show Data #####################
-############CheckBox Menu#########
+############ Calulate ######################
+EDIDel_ok['Diff']=(EDIDel_ok['EDI-Pcs']-EDIDel_ok['Del-Pcs'])
+EDIDel_ok['EDI-B']=(EDIDel_ok['EDI-Pcs']*EDIDel_ok['Price'])
+EDIDel_ok['Del-B']=(EDIDel_ok['Del-Pcs']*EDIDel_ok['Price'])
+EDIDel_ok['Pct(%)']=((EDIDel_ok['Del-Pcs']/EDIDel_ok['EDI-Pcs'])*100)
+Sales_B=EDIDel_ok[['Date','EDI-B','Del-B','Pct(%)']]
+Del_PCT=((EDIDel_ok['Del-Pcs']/EDIDel_ok['EDI-Pcs'])*100).mean()
+Del_Bsum=(EDIDel_ok['Del-Pcs']*EDIDel_ok['Price']).sum()
+################# Check Box ########################
 if st.checkbox('Dailivery and EDI Report'):
-    st.subheader('Daily Delivery details')
-    Deliver[['Part_No','Date','EDI-Pcs','Del-Pcs']]
+    st.subheader('Daily EDI and Delivery details')
+    EDIDel_ok[['Date','EDI-Pcs','Del-Pcs','Diff']]
 if st.checkbox('Sales Report'):
     st.subheader('Sales Report')
-    Deli_Sales2
-########### Fic On Show % ############
-st.subheader('EDI Vs Delivery (%)')
-st.success(Pct)
-########### Fic On Show B ############
-st.subheader('SUM of Sales (B)')
-sumsales=G_Total_Sales.sum()
-st.success(sumsales)
-if st.checkbox('Sales & EDI on Chart'):
-    st.bar_chart(Deli_Sales1)
-################ Selet Part Section ##############
-sales=pd.merge(db,Deliver2,on='Part_No',how='left')
-sales2=pd.merge(sales1['TT-B'],sales,on='Part_No',how='left')
-sales.set_index('PartNo',inplace=True)
-sales['TT-B-2']=(sales['Del-Pcs']*sales['Price'])
-sales['Pct']=(sales['Del-Pcs']/sales['EDI-Pcs'])*100
-
+    Sales_B
+############# Show Data ##############################
+st.subheader('Delivery Performance by %')
+st.success(Del_PCT)
+st.subheader('Delivery Performance by B')
+st.success(Del_Bsum)
+#################### Show Chart #########################
+EDIchart=EDIDel_ok[['EDI-Pcs','Del-Pcs']].groupby('Part_No').sum()
+EDIchart2=EDIDel_ok['Pct(%)'].groupby('Part_No').mean()
+if st.checkbox('Show Performance Chart'):
+    st.subheader('Show Performance Chart by Pcs')
+    st.bar_chart(EDIchart)
+    st.subheader('Show Performance Chart by %')
+    st.bar_chart(EDIchart2)
 ###################Select Part Func #################
+EDIDel_ok.set_index('PartNo',inplace=True)
 selected_Part = st.multiselect('Select PartNo', ['1632','1732','2532','2633','9231','9330','1231','1530','1630','2731','2831','4333','4433','5130','5230','5330','2001','2031','2902','3102','5402',
 '6803','7702','7802','9701','0201','0231','0802','2130','2200','4600','2102','3000','3100','4900','5000','9907','9910','493C','4946','8549','8551','9112','9115','9524',
 '9115','9706','9708','0626','0628','5679','5400','5501','0702','0801','8551','0802','1771','T3100','3113','9775','9680','2300-0','2300-1','2300-2'],default=['3000','3100'],)
-Show_Part=sales.loc[selected_Part][['EDI-Pcs','Del-Pcs','TT-B-2','Pct']]
-st.subheader('Sort Part by Selected')
-st.write(Show_Part)
-############### End ############
+Show_Part=EDIDel_ok.loc[selected_Part][['Date','EDI-Pcs','Del-Pcs','Pct(%)','Del-B']]
+Show_Part_pct=EDIDel_ok.loc[selected_Part]['Pct(%)'].mean()
+Show_Part_B=EDIDel_ok.loc[selected_Part]['Del-B'].sum()
+if st.checkbox('Part Selected Data'):
+    st.subheader('Sort Part by Selected')
+    st.write(Show_Part)
+
+st.subheader('Part Selected Delivery Performance by %')
+st.success(Show_Part_pct)
+st.subheader('Part Selected sum of Sales (B)')
+st.success(Show_Part_B)
+    
+############### Select Dat ############
+EDIDel_ok.set_index('Date',inplace=True)
+selected_Date = st.multiselect('Select Delivery Date', ['Dec 1, 2020','Dec 2, 2020','Dec 3, 2020','Dec 4, 2020','Dec 5, 2020','Dec 6, 2020','Dec 7, 2020','Dec 8, 2020','Dec 9, 2020','Dec 10, 2020',
+'Dec 11, 2020','Dec 12, 2020','Dec 13, 2020','Dec 14, 2020','Dec 15, 2020','Dec 16, 2020','Dec 17, 2020','Dec 18, 2020','Dec 19, 2020',
+'Dec 20, 2020','Dec 21, 2020','Dec 22, 2020','Dec 23, 2020','Dec 24, 2020','Dec 25, 2020','Dec 26, 2020','Dec 27, 2020','Dec 28, 2020','Dec 29, 2020','Dec 30, 2020','Dec 31, 2020'],default=['Dec 1, 2020'],)
+Show_Date=EDIDel_ok.loc[selected_Date][['Part','EDI-Pcs','Del-Pcs','Pct(%)','Del-B']]
+
+Show_Date_pct=EDIDel_ok.loc[selected_Date]['Pct(%)'].mean()
+Show_Date_B=EDIDel_ok.loc[selected_Date]['Del-B'].sum()
+if st.checkbox('Date Selected Data'):
+    st.subheader('Sort by Selected')
+    st.write(Show_Date)
+
+st.subheader('Date Selected Delivery Performance by %')
+st.success(Show_Date_pct)
+st.subheader('Date Selected sum of Sales (B)')
+st.success(Show_Date_B)
+##############################
 st.warning('End Report')
 ###############################
