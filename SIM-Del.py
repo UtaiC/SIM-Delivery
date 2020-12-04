@@ -46,7 +46,7 @@ if st.checkbox('Sales Report'):
 ############# Show Data ##############################
 st.subheader('Delivery Performance by %')
 st.success(Del_PCT)
-st.subheader('Delivery Performance by B')
+st.subheader('Sum of Sales B')
 st.success(Del_Bsum)
 #################### Show Chart #########################
 EDIchart=EDIDel_ok[['EDI-Pcs','Del-Pcs']].groupby('Part_No').sum()
