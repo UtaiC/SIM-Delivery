@@ -36,6 +36,7 @@ EDIDel_ok['Pct(%)']=((EDIDel_ok['Del-Pcs']/EDIDel_ok['EDI-Pcs'])*100)
 Sales_B=EDIDel_ok[['Date','EDI-B','Del-B','Pct(%)']]
 Del_PCT=((EDIDel_ok['Del-Pcs']/EDIDel_ok['EDI-Pcs'])*100).mean()
 Del_Bsum=(EDIDel_ok['Del-Pcs']*EDIDel_ok['Price']).sum()
+Del_pcs=EDIDel_ok['Del-Pcs'].sum()
 ################# Check Box ########################
 if st.checkbox('Dailivery and EDI Report'):
     st.subheader('Daily EDI and Delivery details')
@@ -46,8 +47,10 @@ if st.checkbox('Sales Report'):
 ############# Show Data ##############################
 st.subheader('Delivery Performance by %')
 st.success(Del_PCT)
-st.subheader('Sum of Sales B')
+st.subheader('Delivery Performance by B')
 st.success(Del_Bsum)
+st.subheader('Delivery Performance (Pcs)')
+st.success(Del_pcs)
 #################### Show Chart #########################
 EDIchart=EDIDel_ok[['EDI-Pcs','Del-Pcs']].groupby('Part_No').sum()
 EDIchart2=EDIDel_ok['Pct(%)'].groupby('Part_No').mean()
@@ -64,6 +67,7 @@ selected_Part = st.multiselect('Select PartNo', ['1632','1732','2532','2633','92
 Show_Part=EDIDel_ok.loc[selected_Part][['Date','EDI-Pcs','Del-Pcs','Pct(%)','Del-B']]
 Show_Part_pct=EDIDel_ok.loc[selected_Part]['Pct(%)'].mean()
 Show_Part_B=EDIDel_ok.loc[selected_Part]['Del-B'].sum()
+Show_Part_P=EDIDel_ok.loc[selected_Part]['Del-Pcs'].sum()
 if st.checkbox('Part Selected Data'):
     st.subheader('Sort Part by Selected')
     st.write(Show_Part)
@@ -72,6 +76,8 @@ st.subheader('Part Selected Delivery Performance by %')
 st.success(Show_Part_pct)
 st.subheader('Part Selected sum of Sales (B)')
 st.success(Show_Part_B)
+st.subheader('Part Selected sum of Sales (Pcs)')
+st.success(Show_Part_P)
     
 ############### Select Dat ############
 EDIDel_ok.set_index('Date',inplace=True)
