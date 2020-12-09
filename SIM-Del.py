@@ -88,6 +88,7 @@ Show_Date=EDIDel_ok.loc[selected_Date][['Part','EDI-Pcs','Del-Pcs','Pct(%)','Del
 
 Show_Date_pct=EDIDel_ok.loc[selected_Date]['Pct(%)'].mean()
 Show_Date_B=EDIDel_ok.loc[selected_Date]['Del-B'].sum()
+Show_Date_P=EDIDel_ok.loc[selected_Date]['Del-Pcs'].sum()
 if st.checkbox('Date Selected Data'):
     st.subheader('Sort by Selected')
     st.write(Show_Date)
@@ -96,6 +97,8 @@ st.subheader('Date Selected Delivery Performance by %')
 st.success(Show_Date_pct)
 st.subheader('Date Selected sum of Sales (B)')
 st.success(Show_Date_B)
+st.subheader('Date Selected sum of Sales (Pcs)')
+st.success(Show_Date_P)
 ##############################
 st.warning('End Report')
 ###############################
