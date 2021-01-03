@@ -75,7 +75,7 @@ if st.checkbox('Part Selected Data'):
 st.subheader('Part Selected Delivery Performance by %')
 st.success(round(Show_Part_pct,2))
 st.subheader('Part Selected sum of Sales (B)')
-st.success(Show_Part_B)
+st.success(round(Show_Part_B,2))
 st.subheader('Part Selected sum of Sales (Pcs)')
 st.success(round(Show_Part_P))
     
