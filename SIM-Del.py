@@ -46,7 +46,7 @@ if st.checkbox('Sales Report'):
     Sales_B
 ############# Show Data ##############################
 st.subheader('Delivery Performance by %')
-st.success(round(Del_PCT))
+st.success(round(Del_PCT,2))
 st.subheader('Delivery Performance by B')
 st.success(round(Del_Bsum,2))
 st.subheader('Delivery Performance (Pcs)')
@@ -73,7 +73,7 @@ if st.checkbox('Part Selected Data'):
     st.write(Show_Part)
 
 st.subheader('Part Selected Delivery Performance by %')
-st.success(round(Show_Part_pct))
+st.success(round(round(Show_Part_pct,2))
 st.subheader('Part Selected sum of Sales (B)')
 st.success(round(Show_Part_B,2))
 st.subheader('Part Selected sum of Sales (Pcs)')
@@ -94,11 +94,11 @@ if st.checkbox('Date Selected Data'):
     st.write(Show_Date)
 
 st.subheader('Date Selected Delivery Performance by %')
-st.success(Show_Date_pct)
+st.success(round(Show_Date_pct,2))
 st.subheader('Date Selected sum of Sales (B)')
 st.success(round(Show_Date_B,2))
 st.subheader('Date Selected sum of Sales (Pcs)')
-st.success(Show_Date_P)
+st.success(round(Show_Date_P))
 ##############################
 st.warning('End Report')
 ###############################
