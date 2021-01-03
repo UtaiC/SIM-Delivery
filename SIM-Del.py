@@ -46,11 +46,11 @@ if st.checkbox('Sales Report'):
     Sales_B
 ############# Show Data ##############################
 st.subheader('Delivery Performance by %')
-st.success(round(Del_PCT,2))
+st.success(Del_PCT)
 st.subheader('Delivery Performance by B')
-st.success(round(Del_Bsum,2))
+st.success(Del_Bsum)
 st.subheader('Delivery Performance (Pcs)')
-st.success(round(Del_pcs))
+st.success(Del_pcs)
 #################### Show Chart #########################
 EDIchart=EDIDel_ok[['EDI-Pcs','Del-Pcs']].groupby('Part_No').sum()
 EDIchart2=EDIDel_ok['Pct(%)'].groupby('Part_No').mean()
@@ -73,11 +73,11 @@ if st.checkbox('Part Selected Data'):
     st.write(Show_Part)
 
 st.subheader('Part Selected Delivery Performance by %')
-st.success(round(round(Show_Part_pct,2))
+st.success(Show_Part_pct)
 st.subheader('Part Selected sum of Sales (B)')
 st.success(Show_Part_B)
 st.subheader('Part Selected sum of Sales (Pcs)')
-st.success(round(Show_Part_P))
+st.success(Show_Part_P)
     
 ############### Select Dat ############
 EDIDel_ok.set_index('Date',inplace=True)
@@ -94,11 +94,11 @@ if st.checkbox('Date Selected Data'):
     st.write(Show_Date)
 
 st.subheader('Date Selected Delivery Performance by %')
-st.success(round(Show_Date_pct,2))
+st.success(Show_Date_pct)
 st.subheader('Date Selected sum of Sales (B)')
-st.success(round(Show_Date_B,2))
+st.success(Show_Date_B)
 st.subheader('Date Selected sum of Sales (Pcs)')
-st.success(round(Show_Date_P))
+st.success(Show_Date_P)
 ##############################
 st.warning('End Report')
 ###############################
