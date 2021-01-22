@@ -4,9 +4,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
 import altair as alt
+from datetime import date
 ############# LOGO #############
 Logo=Image.open('SIM-Logo.jpeg')
 st.image(Logo,width=500)
+today= date.today()
+st.warning(today)
 #######Heading Text##########
 st.title('**Sales Report**')
 ##### DataBase File ###################
