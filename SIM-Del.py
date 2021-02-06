@@ -41,7 +41,7 @@ Del_PCT=((EDIDel_ok['Del-Pcs']/EDIDel_ok['EDI-Pcs'])*100).mean()
 Del_Bsum=(EDIDel_ok['Del-Pcs']*EDIDel_ok['Price']).sum()
 Del_pcs=EDIDel_ok['Del-Pcs'].sum()
 ################# Check Box ########################
-if st.checkbox('Dailivery and EDI Report'):
+if st.checkbox('Delivery and EDI Report'):
     st.subheader('Daily EDI and Delivery details')
     EDIDel_ok[['Date','EDI-Pcs','Del-Pcs','Diff']]
 if st.checkbox('Sales Report'):
