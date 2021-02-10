@@ -84,9 +84,9 @@ st.success(round(Show_Part_P))
     
 ############### Select Dat ############
 EDIDel_ok.set_index('Date',inplace=True)
-selected_Date = st.multiselect('Select Delivery Date', ['Jan 1, 2021','Jan 2, 2021','Jan 3, 2021','Jan 4, 2021','Jan 5, 2021','Jan 6, 2021','Jan 7, 2021','Jan 8, 2021','Jan 9, 2021','Jan 10, 2021',
-'Jan 11, 2021','Jan 12, 2021','Jan 13, 2021','Jan 14, 2021','Jan 15, 2021','Jan 16, 2021','Jan 17, 2021','Jan 18, 2021','Jan 19, 2021',
-'Jan 20, 2021','Jan 21, 2021','Jan 22, 2021','Jan 23, 2021','Jan 24, 2021','Jan 25, 2021','Jan 26, 2021','Jan 27, 2021','Jan 28, 2021','Jan 29, 2021','Jan 30, 2021','Jan 31, 2021'],default=['Jan 4, 2021'],)
+selected_Date = st.multiselect('Select Delivery Date', ['Feb 1, 2021','Feb 2, 2021','Feb 3, 2021','Feb 4, 2021','Feb 5, 2021','Feb 6, 2021','Feb 7, 2021','Feb 8, 2021','Feb 9, 2021','Feb 10, 2021',
+'Feb 11, 2021','Feb 12, 2021','Feb 13, 2021','Feb 14, 2021','Feb 15, 2021','Feb 16, 2021','Feb 17, 2021','Feb 18, 2021','Feb 19, 2021',
+'Feb 20, 2021','Feb 21, 2021','Feb 22, 2021','Feb 23, 2021','Feb 24, 2021','Feb 25, 2021','Feb 26, 2021','Feb 27, 2021','Feb 28, 2021'],default=['Feb 4, 2021'],)
 Show_Date=EDIDel_ok.loc[selected_Date][['Part','EDI-Pcs','Del-Pcs','Pct(%)','Del-B']]
 
 Show_Date_pct=EDIDel_ok.loc[selected_Date]['Pct(%)'].mean()
